@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>PHP Live MySQL Database Search</title>
+    <style type="text/css">
+        .search-box{
+            width:100%;
+            position: relative;
+            display: inline-block;
+            font-size:14px;
+        }
+        .result{
+            position: absolute;        
+            z-index: 999;
+            top: 100%;
+            left: 0;
+        }
+        .search-box input[type="text"], .result{
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .result p{
+            margin: 0;
+            padding: 7px 10px;
+            border: 1px solid #CCCCCC;
+            border-top: none;
+            cursor: pointer;
+        }
+        .result p:hover{
+            background: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="jumbotron text-center">PHP Live MySQL Database Search</h1>
+    <div class="container">
+        <div class="search-box">
+            <input type="text" autocomplete="off" autofocus="autofocus" placeholder="Search country..." class="form-control" />
+            <div class="result"></div>
+        </div>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('.search-box input[type="text"]').on("input input", function(){
+            var inputVal = $(this).val();
+            var resultDropdown = $(this).siblings(".result");
+            if(inputVal.length){
+                $.get("search.php", {term: inputVal}).done(function(data){
+                    resultDropdown.html(data);
+                });
+            } else{
+                resultDropdown.empty();
+            }
+        });
+            $(document).on("click", ".result p", function(){
+            $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
+            $(this).parent(".result").empty();
+        });
+    });
+    </script>
+</body>
+</html>
